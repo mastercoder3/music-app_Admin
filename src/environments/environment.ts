@@ -3,7 +3,15 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  firebase:{
+    apiKey: "AIzaSyC9rUSoS3awN244Cx4EWIQFqUNrLvbIv1s",
+    authDomain: "musicapp-zeitlab.firebaseapp.com",
+    databaseURL: "https://musicapp-zeitlab.firebaseio.com",
+    projectId: "musicapp-zeitlab",
+    storageBucket: "musicapp-zeitlab.appspot.com",
+    messagingSenderId: "335286010691"
+  }
 };
 
 /*
