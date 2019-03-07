@@ -17,4 +17,23 @@ export class ApiService {
   }
 
 
+  // Notification
+
+  getAllNotifications(){
+    return this.afs.collection('notifications').snapshotChanges();
+  }
+
+  addNotification(data){
+    return this.afs.collection('notifications').add(data);
+  }
+
+  deleteNotification(id){
+    return this.afs.doc('notifications/'+id).delete();
+  }
+
+  setPushNotification(data){
+    return this.afs.doc('notifications/push').set(data);
+  }
+
+
 }

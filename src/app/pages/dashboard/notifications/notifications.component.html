@@ -1,0 +1,170 @@
+<div class="content-header row">
+  <div class="content-header-left col-md-6 col-12 mb-1">
+    <h3 class="content-header-title">Notifications</h3>
+  </div>
+  <div class="content-header-right breadcrumbs-right breadcrumbs-top col-md-6 col-12">
+    <div class="breadcrumb-wrapper col-12">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="/dashboard/home">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item"><a>Notification</a>
+        </li>
+        <li class="breadcrumb-item"><a style="color: #72BABC;" (click)="openPush(pushNotification)">Push Notification</a>
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<div class="content-body">
+  <section class="basic-elements">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="card-title">Notification</h4>
+          </div>
+          <div class="card-content">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-xl-4 col-lg-4 col-md-12 mb-1">
+                  <fieldset>
+                    <label for="enter">Add Notification:</label>
+                    <button style="margin-top: 5px;" class="btn btn-primary btn-block" (click)="addNotification(addNotific)">Add</button>
+                  </fieldset>
+                </div>
+              </div>
+              <br>
+              <br>
+              <app-spinner *ngIf="showSpinner"></app-spinner>
+              <div class="table-responsive" *ngIf="!showSpinner">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Title</th>
+                      <th>Detail</th>
+                      <th>Image</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of notifications; let i = index">
+                      <th scope="row">{{i + 1}}</th>
+                      <td class="small">{{item?.title}}</td>
+                      <td class="small">{{item?.detail}}</td>
+                      <td><img [src]="item?.imageURL" alt="Notification Image" style="width: 50px; height: 80px;">
+                      </td>
+                      <td>
+                        <span (click)="delete(item)">Delete</span>
+                        <a style="color: red" (click)="delete(item)"><i class="ft-trash-2"></i></a>
+                      </td>
+
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<ng-template #addNotific let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Add Notification</h4>
+    <button type="button" class="close" aria-label="Close" style="outline: none;" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 mb-1">
+          <fieldset>
+            <label for="enter">Title:</label>
+            <input type="text"
+            class="form-control" placeholder="Title" [(ngModel)]="data.title" >
+          </fieldset>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 mb-1">
+          <fieldset>
+            <label for="detail">Detials:</label>
+            <textarea  row="5" col="10" class="form-control" id="detail" [(ngModel)]="data.detail" ></textarea>
+          </fieldset>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xl-4 col-lg-6 col-md-12 mb-1" id="imgDiv">
+          <div class="col-xl-4 col-lg-6 col-md-12 mb-1" >
+              <fieldset>
+                <img src="{{data?.imageURL || image}}"  alt="User Image">
+                <br>
+              </fieldset>
+              <fieldset id="browse">
+                <label class="custom-file-label" for="upload">Choose an Image</label>
+                <input type="file" class="custom-file-input" id="upload" (change)="upload($event)" accept=".png,.jpg">
+              </fieldset>
+            </div>
+      </div>
+     
+      </div>
+
+      <br>
+      <div class="row">
+        <button type="button" class="btn btn-secondary btn-min-width mr-1 mb-1" (click)="submitNotification()">Send Notification</button>
+      </div>
+
+
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">close</button>
+  </div>
+</ng-template>
+
+
+<ng-template #pushNotification let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Push Notification</h4>
+    <button type="button" class="close" aria-label="Close" style="outline: none;" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 mb-1">
+          <fieldset>
+            <label for="enter">Title:</label>
+            <input type="text"
+            class="form-control" placeholder="Title" [(ngModel)]="push.title" >
+          </fieldset>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xl-12 col-lg-12 col-md-12 mb-1">
+          <fieldset>
+            <label for="detail">Message:</label>
+            <input type="text"
+            class="form-control" placeholder="Title" [(ngModel)]="push.message" >
+          </fieldset>
+        </div>
+      </div>
+
+      <br>
+      <div class="row">
+        <button type="button" class="btn btn-secondary btn-min-width mr-1 mb-1" (click)="submitNotification()">Send Push Notification</button>
+      </div>
+
+
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">close</button>
+  </div>
+</ng-template>

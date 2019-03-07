@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import {Router} from '@angular/router';
 import { FormGroup , Validators, FormBuilder} from '@angular/forms';
-import {map} from 'rxjs/operators';
 import { ApiService } from 'src/app/services/api/api.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 
@@ -17,7 +16,7 @@ export class LoginComponent implements OnInit {
   errMsg;
   user;
 
-  constructor(private router: Router, private fb: FormBuilder, private api: ApiService, private auth: AuthService) { }
+  constructor(private router: Router, private fb: FormBuilder, private api: ApiService, private auth: AuthService, private ngZone: NgZone) { }
 
   ngOnInit() {
     this.form = this.fb.group({
@@ -42,7 +41,10 @@ export class LoginComponent implements OnInit {
       this.auth.login(email,password)
         .then(res =>{
           this.user = res;
-          console.log(res)
+          if(this.user){
+            localStorage.setItem('aid', res.user.uid);
+            this.ngZone.run(() => this.router.navigate(['/dashboard/home'])).then();
+          }
         }, err =>{
           this.error =true;
           this.errMsg = err.message;
