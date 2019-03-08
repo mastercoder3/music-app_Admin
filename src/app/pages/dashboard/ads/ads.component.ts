@@ -10,18 +10,16 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 @Component({
-  selector: 'app-songs',
-  templateUrl: './songs.component.html',
-  styleUrls: ['./songs.component.css']
+  selector: 'app-ads',
+  templateUrl: './ads.component.html',
+  styleUrls: ['./ads.component.css']
 })
-export class SongsComponent implements OnInit {
+export class AdsComponent implements OnInit {
 
-  showSpinner: boolean = true;
-  songs;
+  showSpinner = true;
+  ads;
   image: string='./../../assets/app-assets/images/blank.png';
-  songFilter={
-    title: ''
-  }
+
   data ={
     title: '',
     oartist: '',
@@ -32,7 +30,8 @@ export class SongsComponent implements OnInit {
     imageURL: '',
     songURL: '',
     imageId: '',
-    songId: ''
+    songId: '',
+    status: 'active'
   };
   uploadProgress: Observable<number>;
   downloadURL: Observable<any>;
@@ -44,9 +43,7 @@ export class SongsComponent implements OnInit {
   viewSong = false;
 
   constructor(private api: ApiService, private helper: HelperService, private fireStorage: AngularFireStorage,
-     private ngxService: NgxUiLoaderService, private toastr: ToastrService) { }
-
-  
+    private ngxService: NgxUiLoaderService, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.getData();
@@ -59,19 +56,19 @@ export class SongsComponent implements OnInit {
   }
 
   getData(){
-    this.api.getAllSongs()
-      .pipe(map(actions => actions.map(a =>{
-        const data = a.payload.doc.data();
-        const did = a.payload.doc.id;
-        return {did, ...data};
-      })))
-        .subscribe(res =>{
-            this.songs = res;
-            this.showSpinner = false;
-        })
+    this.api.getAllAds()
+    .pipe(map(actions => actions.map(a =>{
+      const data = a.payload.doc.data();
+      const did = a.payload.doc.id;
+      return {did, ...data};
+    })))
+      .subscribe(res =>{
+          this.ads = res;
+          this.showSpinner = false;
+      })
   }
 
-  openAddSong(content){
+  openAdSong(content){
     this.helper.openModelLg(content);
     this.imageId = Math.floor(Date.now() / 1000);
     this.songId = Math.floor(Date.now() / 1000);
@@ -103,7 +100,7 @@ export class SongsComponent implements OnInit {
 
   submit(){
     if(this.data.songURL !== '' && this.data.title && this.data.imageURL !== '' && this.data.artist.length !== 0){   
-      this.api.addSong(this.data)
+      this.api.addAds(this.data)
         .then(res =>{
           this.toastr.success('Song Added to Database.', 'Operation completed.');
           this.helper.closeModel();
@@ -118,9 +115,9 @@ export class SongsComponent implements OnInit {
 
   delete(item){
     if(confirm(`Are you sure to delete ${item.title}`)){
-      this.api.deleteSong(item.did)
+      this.api.deleteAd(item.did)
         .then(res =>{
-          this.toastr.success('Song record deleted.','Operation Successfull.');
+          this.toastr.success('Ad record deleted.','Operation Successfull.');
         }, err =>{
           this.toastr.error(err.message, 'Error!');
         })
@@ -133,5 +130,16 @@ export class SongsComponent implements OnInit {
     this.viewSong = true;
   }
 
+  changeStatus(item, val){
+    this.data.status = val;
+    let id = item.did;
+    delete item['did'];
+    this.api.updateAd(id,item)
+    .then(res =>{
+      this.toastr.success('Ad Status Updated.','Operation Successfull.');
+    }, err =>{
+      this.toastr.error(err.message, 'Error!');
+    })
+  }
 
 }

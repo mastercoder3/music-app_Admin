@@ -10,43 +10,30 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 @Component({
-  selector: 'app-songs',
-  templateUrl: './songs.component.html',
-  styleUrls: ['./songs.component.css']
+  selector: 'app-pop-up',
+  templateUrl: './pop-up.component.html',
+  styleUrls: ['./pop-up.component.css']
 })
-export class SongsComponent implements OnInit {
+export class PopUpComponent implements OnInit {
 
-  showSpinner: boolean = true;
-  songs;
+  showSpinner = true;
+  popup;
   image: string='./../../assets/app-assets/images/blank.png';
-  songFilter={
-    title: ''
-  }
-  data ={
-    title: '',
-    oartist: '',
-    artist: [],
-    movie: '',
-    album: '',
-    video: '',
-    imageURL: '',
-    songURL: '',
-    imageId: '',
-    songId: ''
-  };
   uploadProgress: Observable<number>;
   downloadURL: Observable<any>;
   ref: AngularFireStorageReference;
   task: AngularFireUploadTask;
   flag= false;
   imageId;
-  songId;
-  viewSong = false;
+  data={
+    imageURL: '',
+    imageId: '',
+    title: '',
+    status: 'active'
+  }
 
   constructor(private api: ApiService, private helper: HelperService, private fireStorage: AngularFireStorage,
-     private ngxService: NgxUiLoaderService, private toastr: ToastrService) { }
-
-  
+    private ngxService: NgxUiLoaderService, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.getData();
@@ -59,42 +46,34 @@ export class SongsComponent implements OnInit {
   }
 
   getData(){
-    this.api.getAllSongs()
-      .pipe(map(actions => actions.map(a =>{
-        const data = a.payload.doc.data();
-        const did = a.payload.doc.id;
-        return {did, ...data};
-      })))
-        .subscribe(res =>{
-            this.songs = res;
-            this.showSpinner = false;
-        })
+    this.api.getAllPopup()
+    .pipe(map(actions => actions.map(a =>{
+      const data = a.payload.doc.data();
+      const did = a.payload.doc.id;
+      return {did, ...data};
+    })))
+      .subscribe(res =>{
+          this.popup = res;
+          this.showSpinner = false;
+      })
   }
 
-  openAddSong(content){
+  openPopupSong(content){
     this.helper.openModelLg(content);
     this.imageId = Math.floor(Date.now() / 1000);
-    this.songId = Math.floor(Date.now() / 1000);
-    this.viewSong = false;
   }
 
-  upload(event,val){
+  upload(event){
     this.flag = true;
     this.ngxService.start();
-    if(val === 'audio')
-       this.ref = this.fireStorage.ref('Songs/'+this.songId.toString());
-    else
-      this.ref = this.fireStorage.ref('Thumbnails/'+this.imageId.toString());
+    this.ref = this.fireStorage.ref('Popup/'+this.imageId.toString());
     this.task = this.ref.put(event.target.files[0]);
     this.uploadProgress = this.task.percentageChanges();
     this.task.snapshotChanges().pipe(
       finalize(() => {
         this.ref.getDownloadURL().subscribe(url => {
-          if(val !== 'audio')
-            this.data.imageURL = url;    
-          else
-           this.data.songURL = url;    
-           this.ngxService.stop();    
+          this.data.imageURL = url;   
+          this.ngxService.stop();        
         });
       })
     ).subscribe();
@@ -102,10 +81,10 @@ export class SongsComponent implements OnInit {
   }
 
   submit(){
-    if(this.data.songURL !== '' && this.data.title && this.data.imageURL !== '' && this.data.artist.length !== 0){   
-      this.api.addSong(this.data)
+    if(this.data.imageURL !== '' && this.data.title){   
+      this.api.addPopup(this.data)
         .then(res =>{
-          this.toastr.success('Song Added to Database.', 'Operation completed.');
+          this.toastr.success('Pop-up Added to Database.', 'Operation completed.');
           this.helper.closeModel();
         }, err =>{
           this.toastr.error(err.message, 'Error!');
@@ -116,22 +95,27 @@ export class SongsComponent implements OnInit {
     }
   }
 
+  changeStatus(item, val){
+    this.data.status = val;
+    let id = item.did;
+    delete item['did'];
+    this.api.updateAd(id,item)
+    .then(res =>{
+      this.toastr.success('Ad Status Updated.','Operation Successfull.');
+    }, err =>{
+      this.toastr.error(err.message, 'Error!');
+    })
+  }
+
   delete(item){
     if(confirm(`Are you sure to delete ${item.title}`)){
-      this.api.deleteSong(item.did)
+      this.api.deletePopup(item.did)
         .then(res =>{
-          this.toastr.success('Song record deleted.','Operation Successfull.');
+          this.toastr.success('Popup record deleted.','Operation Successfull.');
         }, err =>{
           this.toastr.error(err.message, 'Error!');
         })
     }
   }
-
-  view(conent, item){
-    this.helper.openModelLg(conent);
-    this.data = item;
-    this.viewSong = true;
-  }
-
 
 }

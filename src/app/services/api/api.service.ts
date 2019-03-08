@@ -35,5 +35,55 @@ export class ApiService {
     return this.afs.doc('notifications/push').set(data);
   }
 
+  // Songs
+
+  getAllSongs(){
+    return this.afs.collection('songs').snapshotChanges();
+  }
+
+  addSong(data){
+    return this.afs.collection('songs').add(data);
+  }
+
+  deleteSong(id){
+    return this.afs.doc('songs/'+id).delete();
+  }
+
+  // Get Ads
+
+  getAllAds(){
+    return this.afs.collection('ads').snapshotChanges();
+  }
+
+  addAds(data){
+    return this.afs.collection('ads').add(data);
+  }
+
+  deleteAd(id){
+    return this.afs.doc('ads/'+id).delete();
+  }
+
+  updateAd(id,data){
+    return this.afs.doc('ads/'+id).update(data);
+  }
+
+  // Get pop-up
+
+  getAllPopup(){
+    return this.afs.collection('popup').snapshotChanges();
+  }
+
+  addPopup(data){
+    return this.afs.collection('popup').add(data);
+  }
+
+  updatePopup(id,data){
+    return this.afs.doc('popup/'+id).update(data);
+  }
+
+  deletePopup(id){
+    return this.afs.doc('popup/'+id).delete();
+  }
+
 
 }

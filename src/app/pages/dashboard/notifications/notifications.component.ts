@@ -6,6 +6,7 @@ import { AngularFireStorage,  AngularFireStorageReference, AngularFireUploadTask
 import { finalize } from 'rxjs/operators'
 import { Observable } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 @Component({
   selector: 'app-notifications',
@@ -34,7 +35,8 @@ export class NotificationsComponent implements OnInit {
   };
   flag = false;
 
-  constructor(private api: ApiService, private helper: HelperService, private fireStorage: AngularFireStorage, private toastr: ToastrService) { }
+  constructor(private api: ApiService, private ngxService: NgxUiLoaderService,
+    private helper: HelperService, private fireStorage: AngularFireStorage, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.getData();
@@ -60,13 +62,15 @@ export class NotificationsComponent implements OnInit {
 
   upload(event){
     this.flag = true;
+    this.ngxService.start();
     this.ref = this.fireStorage.ref('Notifications/'+this.imageId.toString());
     this.task = this.ref.put(event.target.files[0]);
     this.uploadProgress = this.task.percentageChanges();
     this.task.snapshotChanges().pipe(
       finalize(() => {
         this.ref.getDownloadURL().subscribe(url => {
-          this.data.imageURL = url;          
+          this.data.imageURL = url;   
+          this.ngxService.stop();       
         });
       })
     ).subscribe();

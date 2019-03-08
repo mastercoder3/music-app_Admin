@@ -10,6 +10,8 @@ import { FilterPipeModule } from 'ngx-filter-pipe';
 import {NgxPaginationModule} from 'ngx-pagination';
 import { ToastrModule } from 'ngx-toastr';
 import {NgbModalModule, NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { TagInputModule } from 'ngx-chips';
+import { NgxUiLoaderModule } from  'ngx-ui-loader';
 
 
 //firebase
@@ -36,6 +38,8 @@ import { NotificationsComponent } from './pages/dashboard/notifications/notifica
 import { SpinnerComponent } from './pages/shared/ui/spinner/spinner.component';
 import { SongsComponent } from './pages/dashboard/songs/songs.component';
 import { RecoverPasswordComponent } from './pages/entry/recover-password/recover-password.component';
+import { AdsComponent } from './pages/dashboard/ads/ads.component';
+import { PopUpComponent } from './pages/dashboard/pop-up/pop-up.component';
 
 
 // Routes path
@@ -47,7 +51,9 @@ const routes = [
     {path: '', redirectTo: 'home', pathMatch: 'full'},
     {path: 'home', component: HomeComponent},
     {path: 'notifications', component: NotificationsComponent},
-    {path: 'songs', component: SongsComponent}
+    {path: 'songs', component: SongsComponent},
+    {path: 'ads', component: AdsComponent},
+    {path: 'pop-up', component: PopUpComponent}
   ]}
 ]
 
@@ -62,7 +68,9 @@ const routes = [
     NotificationsComponent,
     SpinnerComponent,
     SongsComponent,
-    RecoverPasswordComponent
+    RecoverPasswordComponent,
+    AdsComponent,
+    PopUpComponent
   ],
   imports: [
     BrowserModule,
@@ -75,6 +83,8 @@ const routes = [
     AngularFireStorageModule,
     NgbModalModule,
     NgbModule,
+    NgxUiLoaderModule,
+    TagInputModule,
     ToastrModule.forRoot(),
     NgxPaginationModule,
     FilterPipeModule,
