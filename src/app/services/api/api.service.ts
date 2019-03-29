@@ -32,7 +32,7 @@ export class ApiService {
   }
 
   setPushNotification(data){
-    return this.afs.doc('notifications/push').set(data);
+    return this.afs.doc('notifications/push').update(data);
   }
 
   // Songs

@@ -32,7 +32,11 @@ export class SongsComponent implements OnInit {
     imageURL: '',
     songURL: '',
     imageId: '',
-    songId: ''
+    songId: '',
+    mood: 'happy',
+    views: 0,
+    upload: new Date(),
+    uid: ''
   };
   uploadProgress: Observable<number>;
   downloadURL: Observable<any>;
@@ -103,10 +107,31 @@ export class SongsComponent implements OnInit {
 
   submit(){
     if(this.data.songURL !== '' && this.data.title && this.data.imageURL !== '' && this.data.artist.length !== 0){   
-      this.api.addSong(this.data)
+      if(this.data.video !== '')
+        this.data.video = this.data.video + '?controls=0&amp;modestbranding=1&amp;rel=0&amp;showinfo=0&amp;loop=0&amp;fs=0&amp;hl=en&amp;enablejsapi=1&amp;widgetid=1';
+      this.data.imageId = this.imageId;
+      this.data.songId = this.songId;
+        this.api.addSong(this.data)
         .then(res =>{
           this.toastr.success('Song Added to Database.', 'Operation completed.');
           this.helper.closeModel();
+          this.data ={
+            title: '',
+            oartist: '',
+            artist: [],
+            movie: '',
+            album: '',
+            video: '',
+            imageURL: '',
+            songURL: '',
+            imageId: '',
+            songId: '',
+            mood: 'happy',
+            views: 0,
+            upload: new Date(),
+            uid: ''
+          };
+          
         }, err =>{
           this.toastr.error(err.message, 'Error!');
         })

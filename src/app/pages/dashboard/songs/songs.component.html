@@ -99,7 +99,7 @@
           <fieldset>
             <label for="oArtist">Original Artist:</label>
             <input type="text" id="oArtist" [(ngModel)]="data.oartist"
-            class="form-control" placeholder="Title" >
+            class="form-control" placeholder="Original Artist" >
           </fieldset>
         </div>
       </div>
@@ -114,7 +114,7 @@
           <fieldset>
             <label for="movie">Original Movie:</label>
             <input type="text" id="movie" [(ngModel)]="data.movie"
-            class="form-control" placeholder="Title" >
+            class="form-control" placeholder="Movie Name" >
           </fieldset>
         </div>
       </div>
@@ -122,19 +122,31 @@
         <div class="col-xl-16 col-lg-6 col-md-12 mb-1">
           <fieldset>
             <label for="album">Album:</label>
-            <input type="text" id="album" [(ngModel)]="album"
-            class="form-control" placeholder="Title" >
+            <input type="text" id="album" [(ngModel)]="data.album"
+            class="form-control" placeholder="Album" >
           </fieldset>
         </div>
         <div class="col-xl-16 col-lg-6 col-md-12 mb-1">
           <fieldset>
             <label for="video">Video Link:</label>
-            <input type="text" id="video" [(ngModel)]="video"
-            class="form-control" placeholder="Title" >
+            <input type="text" id="video" [(ngModel)]="data.video"
+            class="form-control" placeholder="Video Link https://www.youtube.come/embed/xyxad" >
           </fieldset>
         </div>
       </div>
 
+      <div class="row">
+        <div class="col-xl-16 col-lg-6 col-md-12 mb-1">
+          <fieldset>
+            <label for="video">Mood:</label>
+            <select class="form-control" [(ngModel)]="data.mood">
+              <option value="happy">Happy</option>
+              <option value="sad">Sad</option>
+              <option value="mad">Mad</option>
+            </select>
+          </fieldset>
+        </div>
+      </div>
 
 
       <div class="row">
