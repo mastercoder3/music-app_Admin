@@ -40,6 +40,7 @@ import { SongsComponent } from './pages/dashboard/songs/songs.component';
 import { RecoverPasswordComponent } from './pages/entry/recover-password/recover-password.component';
 import { AdsComponent } from './pages/dashboard/ads/ads.component';
 import { PopUpComponent } from './pages/dashboard/pop-up/pop-up.component';
+import { FeaturedComponent } from './pages/dashboard/featured/featured.component';
 
 
 // Routes path
@@ -53,7 +54,8 @@ const routes = [
     {path: 'notifications', component: NotificationsComponent},
     {path: 'songs', component: SongsComponent},
     {path: 'ads', component: AdsComponent},
-    {path: 'pop-up', component: PopUpComponent}
+    {path: 'pop-up', component: PopUpComponent},
+    {path: 'featured', component: FeaturedComponent}
   ]}
 ]
 
@@ -70,7 +72,8 @@ const routes = [
     SongsComponent,
     RecoverPasswordComponent,
     AdsComponent,
-    PopUpComponent
+    PopUpComponent,
+    FeaturedComponent
   ],
   imports: [
     BrowserModule,

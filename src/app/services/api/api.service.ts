@@ -85,5 +85,10 @@ export class ApiService {
     return this.afs.doc('popup/'+id).delete();
   }
 
+  // Get featured
+
+  getFeatured(){
+    return this.afs.collection('featured').snapshotChanges();
+  }
 
 }
