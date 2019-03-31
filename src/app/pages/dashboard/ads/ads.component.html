@@ -27,12 +27,11 @@
           <div class="card-content">
             <div class="card-body">
                 <div class="row">
-                    <div class="col-xl-4 col-lg-4 col-md-12 mb-1">
-                      <fieldset>
-                        <label for="enter">Add an Ad:</label>
-                        <button style="margin-top: 5px;" class="btn btn-primary btn-block" (click)="openAdSong(adsSong)">Add</button>
-                      </fieldset>
-                    </div>
+                  <div class="col-xl-4 col-lg-4 col-md-12 mb-1">
+                    <label for="">Search Song.</label>
+                      <input type="text"
+                      class="form-control" [(ngModel)]="songFilter.title" placeholder="Search Songs..."  style="max-width: 300px">
+                  </div>
                   </div>
                   <br>
                   <br>
@@ -49,7 +48,7 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr *ngFor="let item of ads; let i = index">
+                          <tr *ngFor="let item of ads | filterBy: songFilter; let i = index">
                             <th scope="row">{{i + 1}}</th>
                             <td class="small">{{item?.title}}</td>
                             <td class="small"><p *ngFor="let it of item.artist">{{it.display}}</p></td>

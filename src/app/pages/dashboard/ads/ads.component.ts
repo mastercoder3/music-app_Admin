@@ -41,6 +41,9 @@ export class AdsComponent implements OnInit {
   imageId;
   songId;
   viewSong = false;
+  songFilter = {
+    title: ''
+  }
 
   constructor(private api: ApiService, private helper: HelperService, private fireStorage: AngularFireStorage,
     private ngxService: NgxUiLoaderService, private toastr: ToastrService) { }
@@ -64,6 +67,7 @@ export class AdsComponent implements OnInit {
     })))
       .subscribe(res =>{
           this.ads = res;
+          console.log(res);
           this.showSpinner = false;
       })
   }

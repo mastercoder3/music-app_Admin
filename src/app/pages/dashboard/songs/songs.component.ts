@@ -158,5 +158,30 @@ export class SongsComponent implements OnInit {
     this.viewSong = true;
   }
 
+  featured(item){
+    let id = item.did;
+    delete item['did'];
+
+      this.api.addFeatured(id,item)
+      .then(res =>{
+        this.toastr.success('Song Added to Featured.','Operation Successfull.');
+      }, err =>{
+        this.toastr.error(err.message, 'Error!');
+      })
+  }
+
+  addToAds(item){
+    let id = item.did;
+    delete item['did'];
+    item.views = 0;
+    item.status = 'active';
+    this.api.addToAds(id,item)
+    .then(res =>{
+      this.toastr.success('Song Added to Ads.','Operation Successfull.');
+    }, err =>{
+      this.toastr.error(err.message, 'Error!');
+    })
+  }
+
 
 }

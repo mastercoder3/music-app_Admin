@@ -51,6 +51,10 @@ export class ApiService {
 
   // Get Ads
 
+  addToAds(id,data){
+    return this.afs.doc('ads/'+id).set(data);
+  }
+
   getAllAds(){
     return this.afs.collection('ads').snapshotChanges();
   }
@@ -81,6 +85,10 @@ export class ApiService {
     return this.afs.doc('popup/'+id).update(data);
   }
 
+  getPopupById(id){
+    return this.afs.doc('popup/'+id).valueChanges();
+  }
+
   deletePopup(id){
     return this.afs.doc('popup/'+id).delete();
   }
@@ -89,6 +97,14 @@ export class ApiService {
 
   getFeatured(){
     return this.afs.collection('featured').snapshotChanges();
+  }
+
+  addFeatured(id,data){
+    return this.afs.doc('featured/'+id).set(data);
+  }
+
+  deleteFeatured(id){
+    return this.afs.doc('featured/'+id).delete();
   }
 
 }

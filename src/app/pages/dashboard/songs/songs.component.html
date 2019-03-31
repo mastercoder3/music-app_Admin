@@ -64,6 +64,12 @@
                               <span>View</span>
                               <a style="color: green;" (click)="view(uploadSong, item)"><i class="ft-edit"></i></a>
                               <br>
+                              <span>Add To Featured</span>
+                              <a style="color: green;" (click)="featured(item)"><i class="ft-edit"></i></a>
+                              <br>
+                              <span>Add To Ads</span>
+                              <a style="color: green;" (click)="addToAds(item)"><i class="ft-edit"></i></a>
+                              <br>
                             <span (click)="delete(item)" style="cursor: pointer;">Delete</span>
                             <a style="color: red" (click)="delete(item)"><i class="ft-trash-2"></i></a>
                           </td>

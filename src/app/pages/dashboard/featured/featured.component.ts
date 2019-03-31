@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'src/app/services/api/api.service';
 import { map } from 'rxjs/operators';
 import { HelperService } from 'src/app/services/helper/helper.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-featured',
@@ -16,8 +17,10 @@ export class FeaturedComponent implements OnInit {
   };
   featured;
   songs;
+  data;
+  viewSong;
 
-  constructor(private api: ApiService, private helper: HelperService) { }
+  constructor(private api: ApiService, private helper: HelperService, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.showSpinner = true;
@@ -36,19 +39,26 @@ export class FeaturedComponent implements OnInit {
         this.showSpinner = false;
       });
     
-    this.api.getAllSongs()
-    .pipe(map(actions => actions.map(a =>{
-      const data = a.payload.doc.data();
-      const did = a.payload.doc.id;
-      return {did, ...data}
-    })))
-    .subscribe( res => {
-      this.songs = res;
-    });
+
   }
 
-  openAddSong(content){
-    this.helper.openModelLg(content);
+  view(conent, item){
+    this.helper.openModelLg(conent);
+    this.data = item;
+    this.viewSong = true;
   }
+
+  delete(item){
+    if(confirm(`Are you sure to delete ${item.title}`)){
+      this.api.deleteFeatured(item.did)
+        .then(res =>{
+          this.toastr.success('Song record deleted.','Operation Successfull.');
+        }, err =>{
+          this.toastr.error(err.message, 'Error!');
+        })
+    }
+  }
+
+
 
 }

@@ -32,12 +32,7 @@
                         <input type="text"
                         class="form-control" [(ngModel)]="songFilter.title" placeholder="Search Songs..."  style="max-width: 300px">
                     </div>
-                    <div class="offset-xl-4 offset-lg-4 col-xl-4 col-lg-4 col-md-12 mb-1">
-                      <fieldset>
-                        <label for="enter">Add Song:</label>
-                        <button style="margin-top: 5px;" class="btn btn-primary btn-block" (click)="openAddSong(feature)">Add</button>
-                      </fieldset>
-                    </div>
+                   
                   </div>
                   <br>
                   <br>
@@ -80,26 +75,115 @@
   </section>
 </div>
 
-<ng-template #feature let-modal>
-    <div class="modal-header">
-      <h4 class="modal-title" id="modal-basic-title">Upload Song</h4>
-      <button type="button" class="close" aria-label="Close" style="outline: none;" (click)="modal.dismiss('Cross click')">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-      <div class="card-body">
-        
-  
-        <br>
-        <div class="row">
-          <button type="button" class="btn btn-secondary btn-min-width mr-1 mb-1" (click)="submit()">Add Song</button>
+
+<ng-template #uploadSong let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Upload Song</h4>
+    <button type="button" class="close" aria-label="Close" style="outline: none;" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-xl-6 col-lg-6 col-md-12 mb-1">
+          <fieldset>
+            <label for="title">Title:</label>
+            <input type="text" id="title" [(ngModel)]="data.title"
+            class="form-control" placeholder="Title" >
+          </fieldset>
         </div>
-  
-  
+        <div class="col-xl-6 col-lg-6 col-md-12 mb-1">
+          <fieldset>
+            <label for="oArtist">Original Artist:</label>
+            <input type="text" id="oArtist" [(ngModel)]="data.oartist"
+            class="form-control" placeholder="Original Artist" >
+          </fieldset>
+        </div>
       </div>
+      <div class="row">
+        <div class="col-xl-16 col-lg-6 col-md-12 mb-1">
+          <fieldset>
+            <label for="artist">Artists: <small>(Press Enter for multiple.)</small> </label>
+            <tag-input [(ngModel)]='data.artist' secondaryPlaceholder="Atrist Name" theme='bootstrap3-info'></tag-input>
+          </fieldset>
+        </div>
+        <div class="col-xl-6 col-lg-6 col-md-12 mb-1">
+          <fieldset>
+            <label for="movie">Original Movie:</label>
+            <input type="text" id="movie" [(ngModel)]="data.movie"
+            class="form-control" placeholder="Movie Name" >
+          </fieldset>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xl-16 col-lg-6 col-md-12 mb-1">
+          <fieldset>
+            <label for="album">Album:</label>
+            <input type="text" id="album" [(ngModel)]="data.album"
+            class="form-control" placeholder="Album" >
+          </fieldset>
+        </div>
+        <div class="col-xl-16 col-lg-6 col-md-12 mb-1">
+          <fieldset>
+            <label for="video">Video Link:</label>
+            <input type="text" id="video" [(ngModel)]="data.video"
+            class="form-control" placeholder="Video Link https://www.youtube.come/embed/xyxad" >
+          </fieldset>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xl-16 col-lg-6 col-md-12 mb-1">
+          <fieldset>
+            <label for="video">Mood:</label>
+            <select class="form-control" [(ngModel)]="data.mood">
+              <option value="happy">Happy</option>
+              <option value="sad">Sad</option>
+              <option value="mad">Mad</option>
+            </select>
+          </fieldset>
+        </div>
+      </div>
+
+
+      <div class="row">
+        <div class="col-xl-4 col-lg-6 col-md-12 mb-1" id="imgDiv">
+          <div class="col-xl-4 col-lg-6 col-md-12 mb-1" >
+              <fieldset>
+                <label for="thumbnail">Thumbnail:</label>
+                <img src="{{data?.imageURL || image}}"  alt="User Image" id="thumbnail">
+                <br>
+              </fieldset>
+              <fieldset id="browse" *ngIf="!viewSong">
+                <label class="custom-file-label" for="upload">Choose an Image</label>
+                <input type="file" class="custom-file-input" id="upload" (change)="upload($event,'image')" accept=".png,.jpg">
+              </fieldset>
+            </div>
+      </div>
+          <div class="offset-xl-2 col-xl-4 col-lg-6 col-md-12 mb-1">
+              <fieldset id="browse">
+                  <label class="custom-file-label" for="songs" *ngIf="!viewSong">Choose a Song</label>
+                  <input type="file" class="custom-file-input" id="songs" *ngIf="!viewSong" (change)="upload($event,'audio')" accept="audio/*">
+                  <br>
+                  <ngx-ui-loader></ngx-ui-loader>
+                  <audio controls *ngIf="data.songURL">
+                    <source src="{{data?.songURL}}" type="audio/mpeg">
+                  </audio>
+                </fieldset>
+               
+          </div>
+      </div>
+
+      <br>
+      <div class="row">
+        <button type="button" class="btn btn-secondary btn-min-width mr-1 mb-1" (click)="submit()" *ngIf="!viewSong">Add Song</button>
+      </div>
+
+
     </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">close</button>
-    </div>
-  </ng-template>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">close</button>
+  </div>
+</ng-template>

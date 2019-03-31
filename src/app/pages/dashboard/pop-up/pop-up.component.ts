@@ -28,9 +28,10 @@ export class PopUpComponent implements OnInit {
   data={
     imageURL: '',
     imageId: '',
-    title: '',
-    status: 'active'
-  }
+    title: ''
+  };
+
+  startPopup;
 
   constructor(private api: ApiService, private helper: HelperService, private fireStorage: AngularFireStorage,
     private ngxService: NgxUiLoaderService, private toastr: ToastrService) { }
@@ -54,8 +55,14 @@ export class PopUpComponent implements OnInit {
     })))
       .subscribe(res =>{
           this.popup = res;
+          this.popup = this.popup.filter(data => data.did !== 'popup');
           this.showSpinner = false;
       })
+
+      this.api.getPopupById('popup')
+        .subscribe(res => {
+          this.startPopup  =res;
+        })
   }
 
   openPopupSong(content){
@@ -80,6 +87,22 @@ export class PopUpComponent implements OnInit {
 
   }
 
+  upload2(event){
+    this.ngxService.start();
+    this.ref = this.fireStorage.ref('Popup/statup');
+    this.task = this.ref.put(event.target.files[0]);
+    this.uploadProgress = this.task.percentageChanges();
+    this.task.snapshotChanges().pipe(
+      finalize(() => {
+        this.ref.getDownloadURL().subscribe(url => {
+          this.startPopup.imageURL = url; 
+          this.ngxService.stop();        
+        });
+      })
+    ).subscribe();
+
+  }
+
   submit(){
     if(this.data.imageURL !== '' && this.data.title){   
       this.api.addPopup(this.data)
@@ -95,23 +118,28 @@ export class PopUpComponent implements OnInit {
     }
   }
 
-  changeStatus(item, val){
-    this.data.status = val;
-    let id = item.did;
-    delete item['did'];
-    this.api.updateAd(id,item)
-    .then(res =>{
-      this.toastr.success('Ad Status Updated.','Operation Successfull.');
-    }, err =>{
-      this.toastr.error(err.message, 'Error!');
-    })
-  }
 
   delete(item){
     if(confirm(`Are you sure to delete ${item.title}`)){
       this.api.deletePopup(item.did)
         .then(res =>{
           this.toastr.success('Popup record deleted.','Operation Successfull.');
+        }, err =>{
+          this.toastr.error(err.message, 'Error!');
+        })
+    }
+  }
+
+  openStart(content){
+    this.helper.openModelLg(content);
+  }
+
+  submitStart(){
+    if(this.startPopup){
+      this.api.updatePopup('popup',this.startPopup)
+        .then(res =>{
+          this.toastr.success('Pop-up Added to Database.', 'Operation completed.');
+          this.helper.closeModel();
         }, err =>{
           this.toastr.error(err.message, 'Error!');
         })
