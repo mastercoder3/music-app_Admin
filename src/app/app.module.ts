@@ -41,6 +41,7 @@ import { RecoverPasswordComponent } from './pages/entry/recover-password/recover
 import { AdsComponent } from './pages/dashboard/ads/ads.component';
 import { PopUpComponent } from './pages/dashboard/pop-up/pop-up.component';
 import { FeaturedComponent } from './pages/dashboard/featured/featured.component';
+import { PaymentSettingsComponent } from './pages/dashboard/payment-settings/payment-settings.component';
 
 
 // Routes path
@@ -55,7 +56,8 @@ const routes = [
     {path: 'songs', component: SongsComponent},
     {path: 'ads', component: AdsComponent},
     {path: 'pop-up', component: PopUpComponent},
-    {path: 'featured', component: FeaturedComponent}
+    {path: 'featured', component: FeaturedComponent},
+    {path: 'payment-settings', component: PaymentSettingsComponent}
   ]}
 ]
 
@@ -73,7 +75,8 @@ const routes = [
     RecoverPasswordComponent,
     AdsComponent,
     PopUpComponent,
-    FeaturedComponent
+    FeaturedComponent,
+    PaymentSettingsComponent
   ],
   imports: [
     BrowserModule,

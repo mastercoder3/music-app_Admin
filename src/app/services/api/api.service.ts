@@ -107,4 +107,26 @@ export class ApiService {
     return this.afs.doc('featured/'+id).delete();
   }
 
+  // Add payments
+
+  addCoupon(data){
+    return this.afs.collection('payments').add(data);
+  }
+
+  getCoupons(){
+    return this.afs.collection('payments').snapshotChanges();
+  }
+
+  deleteCoupon(id){
+    return this.afs.doc('payments/'+id).delete();
+  }
+
+  getPayment(){
+    return this.afs.doc('payments/amount').valueChanges();
+  }
+
+  updatePayment(data){
+    return this.afs.doc('payments/amount').update(data);
+  }
+
 }

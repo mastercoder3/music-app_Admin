@@ -1,20 +1,19 @@
 <div class="content-header row">
   <div class="content-header-left col-md-6 col-12 mb-1">
-    <h3 class="content-header-title">Songs</h3>
+    <h3 class="content-header-title">Payments</h3>
   </div>
   <div class="content-header-right breadcrumbs-right breadcrumbs-top col-md-6 col-12">
     <div class="breadcrumb-wrapper col-12">
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a routerLink="/dashboard/home">Dashboard</a>
         </li>
-        <li class="breadcrumb-item"><a routerLink="/dashboard/ads">Ads Management</a>
-        </li>
-        <li class="breadcrumb-item"><a> Pop-ups Management</a>
+        <li class="breadcrumb-item"><a>Payments Settings</a>
         </li>
       </ol>
     </div>
   </div>
 </div>
+
 
 <div class="content-body">
   <section class="basic-elements">
@@ -29,13 +28,13 @@
                 <div class="row">
                     <div class="col-xl-4 col-lg-4 col-md-12 mb-1">
                       <fieldset>
-                        <label for="enter">Add an Ad:</label>
-                        <button style="margin-top: 5px;" class="btn btn-primary btn-block" (click)="openPopupSong(adsSong)">Add</button>
+                        <label for="enter">Add a Coupon:</label>
+                        <button style="margin-top: 5px;" class="btn btn-primary btn-block" (click)="addCoupon(couponsModal)">Add</button>
                       </fieldset>
                     </div><div class="col-xl-4 col-lg-4 col-md-12 mb-1">
                       <fieldset>
-                        <label for="enter">Start Add Settings:</label>
-                        <button style="margin-top: 5px;" class="btn btn-primary btn-block" (click)="openStart(startone)">Add</button>
+                        <label for="enter">Set Payment:</label>
+                        <button style="margin-top: 5px;" class="btn btn-primary btn-block" (click)="setPayment(setPaymentModal)">Set</button>
                       </fieldset>
                     </div>
                   </div>
@@ -47,17 +46,19 @@
                         <thead>
                           <tr>
                             <th>#</th>
-                            <th>Title</th>
-                            <th>Image</th>
+                            <th>Name</th>
+                            <th>Discount</th>
+                            <th>Expires On</th>
                             <th>Actions</th>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr *ngFor="let item of popup; let i = index">
+                          <tr *ngFor="let item of coupons; let i = index">
                             <th scope="row">{{i + 1}}</th>
-                            <td class="small">{{item?.title}}</td>
-                            <td class="small"><img [src]="item?.imageURL" alt="Notification Image" style="width: 50px; height: 80px;">
+                            <td class="small">{{item?.name}}</td>
+                            <td class="small">{{item.discount}}
                             </td>
+                            <td>{{item.date.toDate()}}</td>
                             <td class="small">
                               <span (click)="delete(item)" style="cursor: pointer;">Delete</span>
                               <a style="color: red" (click)="delete(item)"><i class="ft-trash-2"></i></a>
@@ -75,9 +76,9 @@
   </section>
 </div>
 
-<ng-template #adsSong let-modal>
+<ng-template #couponsModal let-modal>
     <div class="modal-header">
-      <h4 class="modal-title" id="modal-basic-title">Add Image Popup</h4>
+      <h4 class="modal-title" id="modal-basic-title">Add a Coupon</h4>
       <button type="button" class="close" aria-label="Close" style="outline: none;" (click)="modal.dismiss('Cross click')">
         <span aria-hidden="true">&times;</span>
       </button>
@@ -85,34 +86,31 @@
     <div class="modal-body">
       <div class="card-body">
         <div class="row">
-          <div class="col-xl-6 col-lg-6 col-md-12 mb-1">
-            <fieldset>
-              <label for="title">Title:</label>
-              <input type="text" id="title" [(ngModel)]="data.title"
-              class="form-control" placeholder="Title" >
-            </fieldset>
-          </div>
-        </div> 
-  
-        <div class="row">
-          <div class="col-xl-4 col-lg-6 col-md-12 mb-1" id="imgDiv">
-            <div class="col-xl-4 col-lg-6 col-md-12 mb-1" >
+            <div class="col-xl-6 col-lg-6 col-md-12 mb-1">
                 <fieldset>
-                  <label for="thumbnail">Thumbnail:</label>
-                  <img src="{{data?.imageURL || image}}"  alt="User Image" id="thumbnail">
-                  <br>
+                  <label for="title">Coupon:</label>
+                  <input type="text" placeholder="Coupon Name" class="form-control" [(ngModel)]="c.name">
                 </fieldset>
-                <fieldset id="browse">
-                  <label class="custom-file-label" for="upload">Choose an Image</label>
-                  <input type="file" class="custom-file-input" id="upload" (change)="upload($event)" accept=".png,.jpg">
+        </div>
+        <div class="col-xl-6 col-lg-6 col-md-12 mb-1">
+            <fieldset>
+              <label for="title">Discount:</label>
+              <input type="number" placeholder="Discount Number" class="form-control" [(ngModel)]="c.discount">
+            </fieldset>
+    </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-6 col-lg-6 col-md-12 mb-1">
+                <fieldset>
+                  <label for="title">Expires on:</label>
+                  <input type="date" placeholder="Coupon Name" class="form-control" [(ngModel)]="c.date">
                 </fieldset>
-              </div>
         </div>
         </div>
         <ngx-ui-loader></ngx-ui-loader>
         <br>
         <div class="row">
-          <button type="button" class="btn btn-secondary btn-min-width mr-1 mb-1" (click)="submit()" >Add Pop-Up</button>
+          <button type="button" class="btn btn-secondary btn-min-width mr-1 mb-1" (click)="addNewCoupon()" >Add Coupon</button>
         </div>
   
   
@@ -123,45 +121,28 @@
     </div>
   </ng-template>
 
-  <ng-template #startone let-modal>
+  
+<ng-template #setPaymentModal let-modal>
     <div class="modal-header">
-      <h4 class="modal-title" id="modal-basic-title">Start Pop-up Settings</h4>
+      <h4 class="modal-title" id="modal-basic-title">Set Payment for Premium Model.</h4>
       <button type="button" class="close" aria-label="Close" style="outline: none;" (click)="modal.dismiss('Cross click')">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
-    <div class="modal-body" *ngIf="startPopup">
+    <div class="modal-body">
       <div class="card-body">
         <div class="row">
             <div class="col-xl-6 col-lg-6 col-md-12 mb-1">
                 <fieldset>
-                  <label for="title">Status:</label>
-                  <select [(ngModel)]="startPopup.status" class="form-control">
-                    <option value="active">Active</option>
-                    <option value="inactive">Inactive</option>
-                  </select>
+                  <label for="title">Amount <small>(per year)</small>:</label>
+                  <input type="number" placeholder="Amount of Pyment" class="form-control" [(ngModel)]="payment">
                 </fieldset>
         </div>
+      
         </div>
-        <div class="row">
-          <div class="col-xl-4 col-lg-6 col-md-12 mb-1" id="imgDiv">
-            <div class="col-xl-4 col-lg-6 col-md-12 mb-1" >
-                <fieldset>
-                  <label for="thumbnail">Thumbnail:</label>
-                  <img src="{{startPopup?.imageURL || image}}"  alt="User Image" id="thumbnail">
-                  <br>
-                </fieldset>
-                <fieldset id="browse">
-                  <label class="custom-file-label" for="upload">Choose an Image</label>
-                  <input type="file" class="custom-file-input" id="upload" (change)="upload2($event)" accept=".png,.jpg">
-                </fieldset>
-              </div>
-        </div>
-        </div>
-        <ngx-ui-loader></ngx-ui-loader>
         <br>
         <div class="row">
-          <button type="button" class="btn btn-secondary btn-min-width mr-1 mb-1" (click)="submitStart()" >Update Pop-Up</button>
+          <button type="button" class="btn btn-secondary btn-min-width mr-1 mb-1" (click)="savePayment()" >Save Payment</button>
         </div>
   
   
