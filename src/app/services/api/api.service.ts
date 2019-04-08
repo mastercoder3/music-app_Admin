@@ -129,4 +129,27 @@ export class ApiService {
     return this.afs.doc('payments/amount').update(data);
   }
 
+  getAllPublicPlaylist(){
+    return this.afs.collection('publicplaylist').snapshotChanges();
+  }
+
+  createPublicPlaylist(data){
+    return this.afs.collection('publicplaylist').add(data);
+  }
+  updatePublicPlaylist(id,data){
+    return this.afs.doc('publicplaylist/'+id).update(data);
+  }
+  
+  deletePublicPlaylist(id){
+    return this.afs.doc('publicplaylist/'+id).delete();
+  }
+
+  getAllUsers(){
+    return this.afs.collection('users').snapshotChanges();
+  }
+
+  getAllRecently(){
+    return this.afs.collection('recently').snapshotChanges();
+  }
+
 }

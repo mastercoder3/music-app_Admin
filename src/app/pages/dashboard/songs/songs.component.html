@@ -50,6 +50,7 @@
                           <th>Title</th>
                           <th>Artist Name</th>
                           <th>Original Artist</th>
+                          <th>Views</th>
                           <th>Actions</th>
                         </tr>
                       </thead>
@@ -60,6 +61,7 @@
                           <td class="small"><p *ngFor="let it of item.artist">{{it.display}}</p></td>
                           <td class="small">{{item?.oartist}}
                           </td>
+                          <td class="small">{{item.views}}</td>
                           <td class="small">
                               <span>View</span>
                               <a style="color: green;" (click)="view(uploadSong, item)"><i class="ft-edit"></i></a>
@@ -69,6 +71,9 @@
                               <br>
                               <span>Add To Ads</span>
                               <a style="color: green;" (click)="addToAds(item)"><i class="ft-edit"></i></a>
+                              <br>
+                              <span>Add To Playlist</span>
+                              <a style="color: green;" (click)="addToPlaylist(publicplaylist,item)"><i class="ft-edit"></i></a>
                               <br>
                             <span (click)="delete(item)" style="cursor: pointer;">Delete</span>
                             <a style="color: red" (click)="delete(item)"><i class="ft-trash-2"></i></a>
@@ -154,6 +159,15 @@
             </select>
           </fieldset>
         </div>
+        <div class="col-xl-16 col-lg-6 col-md-12 md-1">
+          <br>
+          <fieldset>
+            <div class="custom-control custom-checkbox">
+                <label for="video">Awesong Orignals &nbsp;</label>
+                <input type="checkbox" name="vehicle1" class="custom-input custom-checkbox" [(ngModel)]="originals" > 
+            </div>
+          </fieldset>
+        </div>
       </div>
 
 
@@ -197,3 +211,45 @@
     <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">close</button>
   </div>
 </ng-template>
+
+
+<ng-template #publicplaylist let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Public Playlists</h4>
+      <button type="button" class="close" aria-label="Close" style="outline: none;" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="card-body">
+        <div class="row">
+            <div class="col-xl-6 col-lg-6 col-md-12 mb-1">
+                <fieldset>
+                  <label for="title">Playlist Name:</label>
+                  <input type="text" id="title" [(ngModel)]="createplaylist.title"
+                  class="form-control" placeholder="Title of Playlist" >
+                </fieldset>
+              </div>
+              <div class="col-xl-6 col-lg-6 col-md-12 mb-1">
+                  <fieldset>
+                    <label for="title">Create</label>
+                    <button style="margin-top: 5px;" class="btn btn-primary btn-block" (click)="createPlaylists()">Create</button>
+                  </fieldset>
+                </div>
+        </div>
+        <h2>Playlists</h2>
+        <br>
+        <div class="row">
+         
+          <ul>
+            <li *ngFor="let item of pData"><a style="font-size: 1.4em; text-decoration: underline;" (click)="addToExisting(item)" >{{item?.title}}</a></li>
+          </ul>
+        </div>
+  
+  
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">close</button>
+    </div>
+  </ng-template>

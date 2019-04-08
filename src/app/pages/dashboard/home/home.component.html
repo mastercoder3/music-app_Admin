@@ -14,4 +14,77 @@
             </div>
         </div>
     </div>
+</div>
+<div class="row">
+    <div class="col-xl-4 col-lg-6 col-12">
+        <div class="card">
+            <div class="card-content">
+                <div class="media align-items-stretch">
+                    <div class="p-2 text-center bg-primary bg-darken-2">
+                        <i class="icon-camera font-large-2 white"></i>
+                    </div>
+                    <div class="p-2 bg-gradient-x-primary white media-body">
+                        <h5>Views</h5>
+                        <h5 class="text-bold-400 mb-0"><i class="ft-plus">{{views}}</i></h5>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+</div>
+<div class="row">
+    <div class="col-xl-4 col-lg-6 col-12">
+        <div class="card">
+            <div class="card-content">
+                <div class="media align-items-stretch">
+                    <div class="p-2 text-center bg-primary bg-darken-2">
+                        <i class="icon-camera font-large-2 white"></i>
+                    </div>
+                    <div class="p-2 bg-gradient-x-primary white media-body">
+                        <h5>Users</h5>
+                        <h5 class="text-bold-400 mb-0"><i class="ft-plus">{{usersLength}}</i></h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content-body">
+    <section class="basic-elements">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Analytics</h4>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-body">
+                                <app-spinner *ngIf="showSpinner"></app-spinner>
+                                <div class="table-responsive" *ngIf="!showSpinner">
+                                    <table class="table">
+                                      <thead>
+                                        <tr>
+                                          <th>#</th>
+                                          <th>Name</th>
+                                          <th>Songs Heard</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        <tr *ngFor="let item of recently; let i = index">
+                                          <th scope="row">{{i + 1}}</th>
+                                          <td class="small">{{getUserName(item.uid)}}</td>
+                                          <td class="small"><p *ngFor="let it of item.songs">{{getSongsName(it)}}</p>
+                                          </td>
+                    
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                  </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

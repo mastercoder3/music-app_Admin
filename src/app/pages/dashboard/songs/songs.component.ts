@@ -36,8 +36,10 @@ export class SongsComponent implements OnInit {
     mood: 'happy',
     views: 0,
     upload: new Date(),
-    uid: ''
+    uid: '',
+    originals: ''
   };
+  originals = false;
   uploadProgress: Observable<number>;
   downloadURL: Observable<any>;
   ref: AngularFireStorageReference;
@@ -46,6 +48,7 @@ export class SongsComponent implements OnInit {
   imageId;
   songId;
   viewSong = false;
+  pData;
 
   constructor(private api: ApiService, private helper: HelperService, private fireStorage: AngularFireStorage,
      private ngxService: NgxUiLoaderService, private toastr: ToastrService) { }
@@ -73,6 +76,15 @@ export class SongsComponent implements OnInit {
             this.songs = res;
             this.showSpinner = false;
         })
+    this.api.getAllPublicPlaylist()
+    .pipe(map(actions => actions.map(a =>{
+      const data = a.payload.doc.data();
+      const did = a.payload.doc.id;
+      return {did, ...data};
+    })))
+      .subscribe(res =>{
+          this.pData = res;
+      })
   }
 
   openAddSong(content){
@@ -111,6 +123,8 @@ export class SongsComponent implements OnInit {
         this.data.video = this.data.video + '?controls=0&amp;modestbranding=1&amp;rel=0&amp;showinfo=0&amp;loop=0&amp;fs=0&amp;hl=en&amp;enablejsapi=1&amp;widgetid=1';
       this.data.imageId = this.imageId;
       this.data.songId = this.songId;
+      if(this.originals)
+        this.data.originals = 'originals'
         this.api.addSong(this.data)
         .then(res =>{
           this.toastr.success('Song Added to Database.', 'Operation completed.');
@@ -129,8 +143,10 @@ export class SongsComponent implements OnInit {
             mood: 'happy',
             views: 0,
             upload: new Date(),
-            uid: ''
+            uid: '',
+            originals: ''
           };
+          this.originals = false;
           
         }, err =>{
           this.toastr.error(err.message, 'Error!');
@@ -181,6 +197,54 @@ export class SongsComponent implements OnInit {
     }, err =>{
       this.toastr.error(err.message, 'Error!');
     })
+  }
+
+  playlist;
+  createplaylist = {
+    title: '',
+    songs: []
+  }
+
+  addToPlaylist(content, item){
+    this.helper.openModelLg(content);
+    this.playlist = item;
+  }
+
+  createPlaylists(){
+    if(this.createplaylist.title !== ''){
+      this.createplaylist.songs.push(this.playlist.did);
+      this.api.createPublicPlaylist(this.createplaylist)
+        .then(res =>{
+          this.helper.closeModel();
+          this.toastr.success('Song Added to Playlist.','Playlist Created.');
+          this. createplaylist = {
+            title: '',
+            songs: []
+          }
+        }, err =>{
+          this.toastr.error(err.message,'Error!')
+        })
+    }
+  }
+
+  addToExisting(data){
+    let x = data.songs.filter(data => data === this.playlist.did);
+    if(x.length > 0){
+      this.toastr.error('Song Already Exists in Playlist.','Cannot Add to playlist.')
+    }
+    else {
+      data.songs.push(this.playlist.did);
+      let id = data.did;
+      delete data['did'];
+      this.api.updatePublicPlaylist(id, data)
+        .then(res =>{
+          this.helper.closeModel();
+          this.toastr.success('Song Added To playlist.');
+        }, err =>{
+          this.toastr.error(err.message,'Error!')
+        })
+
+    }
   }
 
 

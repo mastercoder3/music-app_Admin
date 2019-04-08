@@ -42,6 +42,7 @@ import { AdsComponent } from './pages/dashboard/ads/ads.component';
 import { PopUpComponent } from './pages/dashboard/pop-up/pop-up.component';
 import { FeaturedComponent } from './pages/dashboard/featured/featured.component';
 import { PaymentSettingsComponent } from './pages/dashboard/payment-settings/payment-settings.component';
+import { PlaylistComponent } from './playlist/playlist.component';
 
 
 // Routes path
@@ -57,7 +58,8 @@ const routes = [
     {path: 'ads', component: AdsComponent},
     {path: 'pop-up', component: PopUpComponent},
     {path: 'featured', component: FeaturedComponent},
-    {path: 'payment-settings', component: PaymentSettingsComponent}
+    {path: 'payment-settings', component: PaymentSettingsComponent},
+    {path: 'playlist', component: PlaylistComponent}
   ]}
 ]
 
@@ -76,7 +78,8 @@ const routes = [
     AdsComponent,
     PopUpComponent,
     FeaturedComponent,
-    PaymentSettingsComponent
+    PaymentSettingsComponent,
+    PlaylistComponent
   ],
   imports: [
     BrowserModule,
