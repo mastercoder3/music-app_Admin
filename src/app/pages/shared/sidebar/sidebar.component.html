@@ -22,6 +22,8 @@
             </li>
             <li class="nav-item"><a routerLink="/dashboard/songs" ><i class="ft-music" ></i><span class="menu-title">Songs</span></a>
             </li>
+            <li class="nav-item"><a routerLink="/dashboard/users"><i class="ft-users"></i><span class="menu-title">Users</span></a>
+            </li>
             <li class="nav-item"><a routerLink="/dashboard/ads"><i class="ft-settings"></i><span class="menu-title">Ads</span></a>
             </li>
             <li class="nav-item"><a routerLink="/dashboard/playlist"><i class="ft-settings"></i><span class="menu-title">Playlist</span></a>
@@ -32,7 +34,7 @@
     </div>
   </div>
 
-  
+
 <ng-template #pushNotification let-modal>
     <div class="modal-header">
       <h4 class="modal-title" id="modal-basic-title">Push Notification</h4>
@@ -60,13 +62,13 @@
             </fieldset>
           </div>
         </div>
-  
+
         <br>
         <div class="row">
           <button type="button" class="btn btn-secondary btn-min-width mr-1 mb-1" (click)="sendPushNotification()">Send Push Notification</button>
         </div>
-  
-  
+
+
       </div>
     </div>
     <div class="modal-footer">

@@ -139,7 +139,7 @@ export class ApiService {
   updatePublicPlaylist(id,data){
     return this.afs.doc('publicplaylist/'+id).update(data);
   }
-  
+
   deletePublicPlaylist(id){
     return this.afs.doc('publicplaylist/'+id).delete();
   }
@@ -152,4 +152,13 @@ export class ApiService {
     return this.afs.collection('recently').snapshotChanges();
   }
 
+   // Users
+
+   deleteUser(id){
+    return this.afs.doc('users/'+id).delete();
+  }
+
+  updateUser(id,data){
+    return this.afs.doc('users/'+id).update(data);
+  }
 }

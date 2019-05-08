@@ -61,7 +61,19 @@
                     <div class="card-content">
                         <div class="card-body">
                                 <app-spinner *ngIf="showSpinner"></app-spinner>
-                                <div class="table-responsive" *ngIf="!showSpinner">
+                                <ngx-accordion *ngIf="users">
+                                  <ngx-accordion-container *ngFor="let item of recently; let i = index">
+                                    <div class=" ngx-accordion-header ">
+                                      <h1>> {{getUserName(item?.uid)}}</h1> 
+                                      </div>
+                                      <div class="ngx-accordion-body">
+                                          <div><p style="padding-left: 20px;" *ngFor="let it of item.songs">{{getSongsName(it)}}</p></div>
+                                      </div>
+                                  </ngx-accordion-container>
+
+                                  </ngx-accordion>
+
+                                <!-- <div class="table-responsive" *ngIf="!showSpinner">
                                     <table class="table">
                                       <thead>
                                         <tr>
@@ -71,16 +83,32 @@
                                         </tr>
                                       </thead>
                                       <tbody>
+
                                         <tr *ngFor="let item of recently; let i = index">
-                                          <th scope="row">{{i + 1}}</th>
-                                          <td class="small">{{getUserName(item.uid)}}</td>
-                                          <td class="small"><p *ngFor="let it of item.songs">{{getSongsName(it)}}</p>
-                                          </td>
-                    
-                                        </tr>
+                                            <ngx-accordion>
+
+                                                <ngx-accordion-container>
+
+                                                  <div class=" ngx-accordion-header ">
+                                                          <th scope="row">{{i + 1}}</th>
+                                                          <td class="small">{{getUserName(item?.uid)}}</td>
+                                                    </div>
+                                                    <div class="ngx-accordion-body">
+                                                        <div><td class="small"><p *ngFor="let it of item.songs">{{getSongsName(it)}}</p>
+                                                        </td></div>
+                                                    </div>
+                                                </ngx-accordion-container>
+
+                                                </ngx-accordion> -->
+
+                                          <!-- <th scope="row">{{i + 1}}</th> -->
+                                          <!-- <td class="small">{{getUserName(item.uid)}}</td> -->
+                                          <!-- <td class="small"><p *ngFor="let it of item.songs">{{getSongsName(it)}}</p>
+                                          </td> -->
+                                        <!-- </tr>
                                       </tbody>
                                     </table>
-                                  </div>
+                                  </div> -->
                         </div>
                     </div>
                 </div>

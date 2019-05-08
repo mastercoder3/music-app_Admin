@@ -12,7 +12,10 @@ import { ToastrModule } from 'ngx-toastr';
 import {NgbModalModule, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { TagInputModule } from 'ngx-chips';
 import { NgxUiLoaderModule } from  'ngx-ui-loader';
-
+import { AccordionModule } from 'angularx-accordion';
+import { AccordionComponent } from 'angularx-accordion';
+import {AccordionToggleComponent } from 'angularx-accordion';
+import { Accordion } from 'angularx-accordion/accordion';
 
 //firebase
 import { AngularFireModule } from '@angular/fire';
@@ -43,6 +46,7 @@ import { PopUpComponent } from './pages/dashboard/pop-up/pop-up.component';
 import { FeaturedComponent } from './pages/dashboard/featured/featured.component';
 import { PaymentSettingsComponent } from './pages/dashboard/payment-settings/payment-settings.component';
 import { PlaylistComponent } from './playlist/playlist.component';
+import { UsersComponent } from './pages/dashboard/users/users.component';
 
 
 // Routes path
@@ -59,7 +63,8 @@ const routes = [
     {path: 'pop-up', component: PopUpComponent},
     {path: 'featured', component: FeaturedComponent},
     {path: 'payment-settings', component: PaymentSettingsComponent},
-    {path: 'playlist', component: PlaylistComponent}
+    {path: 'playlist', component: PlaylistComponent},
+    {path: 'users', component: UsersComponent}
   ]}
 ]
 
@@ -79,7 +84,8 @@ const routes = [
     PopUpComponent,
     FeaturedComponent,
     PaymentSettingsComponent,
-    PlaylistComponent
+    PlaylistComponent,
+    UsersComponent
   ],
   imports: [
     BrowserModule,
@@ -92,6 +98,7 @@ const routes = [
     AngularFireStorageModule,
     NgbModalModule,
     NgbModule,
+    AccordionModule,
     NgxUiLoaderModule,
     TagInputModule,
     ToastrModule.forRoot(),
@@ -99,7 +106,7 @@ const routes = [
     FilterPipeModule,
     RouterModule.forRoot(routes)
   ],
-  providers: [ApiService, AuthService, HelperService, { provide: FirestoreSettingsToken, useValue: {} }],
+  providers: [ ApiService, AuthService, HelperService, { provide: FirestoreSettingsToken, useValue: {} }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

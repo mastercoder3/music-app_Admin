@@ -1,0 +1,80 @@
+<div class="content-header row">
+  <div class="content-header-left col-md-6 col-12 mb-1">
+    <h3 class="content-header-title">Users</h3>
+  </div>
+  <div class="content-header-right breadcrumbs-right breadcrumbs-top col-md-6 col-12">
+    <div class="breadcrumb-wrapper col-12">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="/dashboard/home">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item"><a>Users</a>
+        </li>
+        <li class="breadcrumb-item"><a [routerLink]="['/dashboard/featured']" >Featured</a>
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<div class="content-body">
+  <section class="basic-elements">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="card-title">Users</h4>
+          </div>
+          <div class="card-content">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-xl-4 col-lg-4 col-md-12 mb-1">
+                      <label for="">Search User.</label>
+                        <input type="text"
+                        class="form-control" [(ngModel)]="userFilter.username" placeholder="Search Users..."  style="max-width: 300px">
+                    </div>
+                  </div>
+                  <br>
+                  <br>
+                  <app-spinner *ngIf="showSpinner"></app-spinner>
+                  <div class="table-responsive" *ngIf="!showSpinner">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>Name</th>
+                          <th>Email</th>
+                          <th>Gender</th>
+                          <th>Type</th>
+                          <th>Status</th>
+                          <th>Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let item of users| filterBy: userFilter; let i = index">
+                          <th scope="row">{{i + 1}}</th>
+                          <td class="small">{{item?.name}}</td>
+                          <td class="small">{{item?.email}}</td>
+                          <td class="small">{{item?.gender}}
+                          </td>
+                          <td class="small">{{item.type === 'user' ? 'Listener' : 'Artist'}}</td>
+                          <td class="small">
+                              {{(item?.isVerified === true || item?.isVerified === false) ? '' : 'Active' }}
+                              <span *ngIf="item.isVerified" (click)="inactive(item,false)"style="cursor: pointer; color: green;">Active</span>
+                              <span *ngIf="item.isVerified === false" (click)="inactive(item,true)" style="cursor: pointer; color: red;">Inactive</span>
+                          </td>
+                          <td class="small">
+                            <span (click)="delete(item)" style="cursor: pointer;">Delete</span>
+                            <a style="color: red" (click)="delete(item)"><i class="ft-trash-2"></i></a>
+                          </td>
+
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
