@@ -71,8 +71,10 @@ export class HomeComponent implements OnInit {
 
     let x: Array<any>;
     x = this.users.filter(data => data.did === id);
+    if(x.length === 0)
+      return '';
     if (x[0].name !== '') {
-      return x[0].name;
+      return x[0].name +'     (' +x[0].email+')';
     }
     else {
       return 'User'
